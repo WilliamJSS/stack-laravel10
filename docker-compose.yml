@@ -1,0 +1,57 @@
+version: '3'
+
+services:
+  postgres:
+    build: ./docker/postgres/.
+    container_name: project_name_db
+    image: project_name-db
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+    ports:
+      - 5432:5432
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - project_name-network
+
+  apache:
+    build: ./docker/apache/.
+    container_name: project_name_site
+    image: project_name-site
+    restart: always
+    ports:
+      - 80:80
+    working_dir: /var/www/html/project_name
+    volumes:
+      - .:/var/www/html/project_name
+      - ./docker/apache/sites-available:/etc/apache2/sites-available
+    networks:
+      - project_name-network
+    depends_on:
+      - postgres
+
+  pgadmin:
+    container_name: project_name_sgbd
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${SGBD_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${SGBD_PASS}
+    ports:
+      - 5050:80
+    volumes:
+      - sgbd-data:/var/lib/pgadmin
+      - ./docker/pgadmin/servers.json:/pgadmin4/servers.json
+    networks:
+      - project_name-network
+    depends_on:
+      - postgres
+
+networks:
+  project_name-network: {}
+
+volumes:
+  db-data: {}
+  sgbd-data: {}

@@ -1,0 +1,22 @@
+{
+    "Servers": {
+        "1": {
+            "Name": "PostgreSQL 12",
+            "Group": "Servers",
+            "Host": "project_name_db",
+            "Port": 5432,
+            "MaintenanceDB": "project_name",
+            "Username": "project_name",
+            "UseSSHTunnel": 0,
+            "TunnelPort": "22",
+            "TunnelAuthentication": 0,
+            "KerberosAuthentication": false,
+            "ConnectionParameters": {
+                "sslmode": "prefer",
+                "connect_timeout": 10,
+                "sslcert": "<STORAGE_DIR>/.postgresql/postgresql.crt",
+                "sslkey": "<STORAGE_DIR>/.postgresql/postgresql.key"
+            }
+        }
+    }
+}
