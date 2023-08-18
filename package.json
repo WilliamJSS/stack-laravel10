@@ -4,11 +4,10 @@
     "scripts": {
         "dev": "vite",
         "build": "vite build",
-        "setup": "npm run install && npm run permission && npm run key && npm run activate",
+        "setup": "npm run update && npm run permission && npm run key && npm run activate",
         "activate": "cd /etc/apache2/sites-available && a2ensite web.conf && service apache2 reload",
         "key": "php artisan key:generate",
         "permission": "chmod -R 777 .",
-        "install": "composer install && npm install",
         "update": "composer update && npm update",
         "db": "php artisan migrate:fresh && php artisan db:seed"
     },
