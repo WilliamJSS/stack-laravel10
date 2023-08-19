@@ -22,6 +22,11 @@ cp .env.example .env
 ```
 *Obs: substitua `project_name` pelo nome do seu projeto em todos os arquivos (Dica: no VSCode você pode fazer isso rapidamente na aba "Pesquisar")*
 
+**Reinicie o repositório git:**
+```bash
+rm -rf .git && git init
+```
+
 ## Configuração
 
 **Suba os containers:**
