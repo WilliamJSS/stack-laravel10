@@ -23,7 +23,6 @@ services:
     restart: always
     ports:
       - 80:80
-    working_dir: /var/www/html/project_name
     volumes:
       - .:/var/www/html/project_name
       - ./docker/apache/sites-available:/etc/apache2/sites-available
