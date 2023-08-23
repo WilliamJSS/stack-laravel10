@@ -3,7 +3,10 @@ FROM php:8.2-apache
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 RUN apt-get update && apt-get upgrade -y \
-    && apt-get install nano git wget libpq-dev libzip-dev unzip libfreetype6-dev libjpeg62-turbo-dev libpng-dev -y \
+    && apt-get install nano git wget unzip -y \
+    && git config --global --add safe.directory /var/www/html/project_name
+
+RUN apt-get install libpq-dev libzip-dev libfreetype6-dev libjpeg62-turbo-dev libpng-dev -y \
     && docker-php-ext-install bcmath pdo_pgsql pdo_mysql mysqli pgsql exif zip \
     && docker-php-ext-enable exif \
     && docker-php-ext-install -j$(nproc) iconv \
@@ -15,8 +18,7 @@ RUN chmod -R 777 /var/www/html \
     && rm /etc/localtime \
     && ln -s /usr/share/zoneinfo/America/Bahia /etc/localtime \
     && echo "America/Bahia" > /etc/timezone \
-    && sed "s/;date.timezone =/date.timezone = America\/Bahia/g" /usr/local/etc/php/php.ini-development > /usr/local/etc/php/php.ini \
-    && git config --global --add safe.directory /var/www/html/project_name
+    && sed "s/;date.timezone =/date.timezone = America\/Bahia/g" /usr/local/etc/php/php.ini-development > /usr/local/etc/php/php.ini
 
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y nodejs

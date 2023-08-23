@@ -32,8 +32,9 @@ services:
       - postgres
 
   pgadmin:
-    container_name: project_name_sgbd
-    image: dpage/pgadmin4
+    build: ./docker/pgadmin/.
+    container_name: project_name  _sgbd
+    image: project_name-sgbd
     restart: always
     environment:
       PGADMIN_DEFAULT_EMAIL: ${SGBD_EMAIL}
