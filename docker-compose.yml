@@ -33,7 +33,7 @@ services:
 
   pgadmin:
     build: ./docker/pgadmin/.
-    container_name: project_name  _sgbd
+    container_name: project_name_sgbd
     image: project_name-sgbd
     restart: always
     environment:
