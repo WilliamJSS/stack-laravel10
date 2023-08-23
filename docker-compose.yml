@@ -25,7 +25,6 @@ services:
       - 80:80
     volumes:
       - .:/var/www/html/project_name
-      - ./docker/apache/sites-available:/etc/apache2/sites-available
     networks:
       - project_name-network
     depends_on:
