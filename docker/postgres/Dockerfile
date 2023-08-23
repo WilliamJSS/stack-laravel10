@@ -7,4 +7,6 @@ RUN cp /usr/share/zoneinfo/America/Bahia /etc/localtime \
 ENV TZ="America/Bahia"
 ENV PGTZ="America/Bahia"
 
+COPY backup.sql /docker-entrypoint-initdb.d/
+
 EXPOSE 5432
