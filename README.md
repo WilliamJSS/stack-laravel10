@@ -3,11 +3,9 @@
 <p align="center"><b>Stack Laravel 10 - Docker, Apache (com PHP 8.2 e Node 20.5), PostgreSQL 12 e pgAdmin4 (v7.5)</b></p>
 
 ### Tópicos
-- <a href="#1-download">1. Download</a>
+- <a href="#1-instalação">1. Instalação</a>
 - <a href="#2-arquivos-e-pastas">2. Arquivos e Pastas</a>
 - <a href="#3-configuração">3. Configuração</a>
-  - <a href="#31-projeto-existente">3.1 Projeto existente</a>
-  - <a href="#32-projeto-novo">3.2 Projeto novo</a>
 - <a href="#4-execução-do-docker">4. Execução do docker</a>
 - <a href="#extra-scripts">Extra: scripts</a>
   - <a href="#configurar-o-projeto-depois-do-git-clone-nunca-foi-tão-fácil">Configurar o projeto depois do git clone nunca foi tão fácil...</a>
@@ -15,13 +13,23 @@
 - <a href="#links">Links</a>
 - <a href="#referências">Referências</a>
 
-## 1. Download
+## 1. Instalação
 
-Você pode configurar essa stack em um ***projeto existente*** ou usá-la para ***criar um novo projeto***, no primeiro caso faça o clone desse repositório dentro da pasta do seu projeto, já no segundo caso, fica a seu critério em qual pasta deve ficar.
+Você pode configurar essa stack em um ***projeto existente*** ou usá-la para ***criar um novo projeto***.
 
-**Faça o clone desse repositório (substitua `nome_da_pasta` pelo nome do seu projeto):**
+**Caso você queira adicionar essa stack em um `NOVO PROJETO`, antes execute esse comando para criá-lo (substitua `nome_da_pasta` pelo nome do seu projeto):**
 ```bash
-git clone git@github.com:WilliamJSS/stack-laravel10.git nome_da_pasta
+docker run --rm -it \
+  -u $(id -u):$(id -g) \
+  -v $(pwd):/app \
+  -w /app \
+  composer:latest "$@" \
+  composer create-project laravel/laravel:10.* nome_da_pasta
+```
+
+**Faça o clone desse repositório dentro da pasta do seu projeto:**
+```bash
+git clone git@github.com:WilliamJSS/stack-laravel10.git
 ```
 
 ## 2. Arquivos e pastas
@@ -40,23 +48,17 @@ Na pasta `docker` estão os arquivos de imagem (**Dockerfile**) - usados como ba
 
 ## 3. Configuração
 
-A partir desse ponto, a configuração do docker no seu projeto vai variar caso seja um ***projeto existente*** ou um ***projeto novo***. Mas antes disso, você precisa alterar o nome do projeto nos arquivos em que ele aparece. Caso esteja usando o [Visual Studio Code](https://code.visualstudio.com), existe uma opção que você pode usar para facilitar isso:
+Agora você precisa alterar o nome do projeto nos arquivos em que ele aparece. Caso esteja usando o [Visual Studio Code](https://code.visualstudio.com), existe uma opção que você pode usar para facilitar isso:
 
 <img src="./assets/vscode_pesquisar_e_substituir.png" alt="VSCode Pesquisar e Substituir">
 
 *Substitua `project_name` pelo nome do seu projeto nos arquivos `docker-compose.yml`, `docker/apache/web.conf`, `docker/apache/Dockerfile` e `docker/pgadmin/servers.json`*.
-
-### 3.1 Projeto existente
 
 Com os arquivos configurados você pode mover a pasta `docker` e o arquivo `docker-compose.yml` para a raiz do seu projeto.
 
 No `.env` do seu projeto, substitua os valores das chaves referentes ao banco de dados (**DB_CONNECTION**, **DB_HOST**, **DB_PORT**, **DB_DATABASE** e **DB_USERNAME**) pelos que estão presentes no arquivo `.env.docker` e adicione também as chaves/valores para o sgbd (**SGBD_EMAIL** e **SGBD_PASS**). Feito isso, você pode apagar os arquivos restantes desse repositório.
 
 🔴 Com exceção do **DB_PASSWORD**, **SGBD_EMAIL** e **SGBD_PASS**, os valores das outras chaves você **NÃO DEVE** alterar, pois são utilizadas em outros arquivos (`docker/pgadmin/servers.json` e `docker-compose.yml`)
-
-### 3.2 Projeto novo
-
-> Escrevendo...
 
 ## 4. Execução do docker
 
