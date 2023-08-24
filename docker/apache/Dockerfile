@@ -2,10 +2,11 @@ FROM php:8.2-apache
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+# update base packages
 RUN apt-get update && apt-get upgrade -y \
-    && apt-get install nano git wget unzip -y \
-    && git config --global --add safe.directory /var/www/html/project_name
+    && apt-get install nano git wget unzip -y
 
+# install requirements
 RUN apt-get install libpq-dev libzip-dev libfreetype6-dev libjpeg62-turbo-dev libpng-dev -y \
     && docker-php-ext-install bcmath pdo_pgsql pdo_mysql mysqli pgsql exif zip \
     && docker-php-ext-enable exif \
@@ -14,15 +15,24 @@ RUN apt-get install libpq-dev libzip-dev libfreetype6-dev libjpeg62-turbo-dev li
     && docker-php-ext-install -j$(nproc) gd \
     && a2enmod rewrite
 
+# change timezone
 RUN chmod -R 777 /var/www/html \
     && rm /etc/localtime \
     && ln -s /usr/share/zoneinfo/America/Bahia /etc/localtime \
     && echo "America/Bahia" > /etc/timezone \
     && sed "s/;date.timezone =/date.timezone = America\/Bahia/g" /usr/local/etc/php/php.ini-development > /usr/local/etc/php/php.ini
 
+# install node
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y nodejs
 
+# activate webserver
+WORKDIR /etc/apache2/sites-available
+COPY web.conf .
+RUN a2ensite web.conf
+
+# setup workdir
 WORKDIR /var/www/html/project_name
+RUN git config --global --add safe.directory /var/www/html/project_name
 
 EXPOSE 80 9000
