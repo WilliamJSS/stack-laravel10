@@ -2,6 +2,19 @@
 
 <p align="center"><b>Stack Laravel 10 - Docker, Apache (com PHP 8.2 e Node 20.5), PostgreSQL 12 e pgAdmin4 (v7.5)</b></p>
 
+### Tópicos
+- <a href="#1-download">1. Download</a>
+- <a href="#2-arquivos-e-pastas">2. Arquivos e Pastas</a>
+- <a href="#3-configuração">3. Configuração</a>
+  - <a href="#31-projeto-existente">3.1 Projeto existente</a>
+  - <a href="#32-projeto-novo">3.2 Projeto novo</a>
+- <a href="#4-execução-do-docker">4. Execução do docker</a>
+- <a href="#extra-scripts">Extra: scripts</a>
+  - <a href="#configurar-o-projeto-depois-do-git-clone-nunca-foi-tão-fácil">Configurar o projeto depois do git clone nunca foi tão fácil...</a>
+  - <a href="#criar-backup-do-banco">Criar Backup do Banco</a>
+- <a href="#links">Links</a>
+- <a href="#referências">Referências</a>
+
 ## 1. Download
 
 Você pode configurar essa stack em um ***projeto existente*** ou usá-la para ***criar um novo projeto***, no primeiro caso faça o clone desse repositório dentro da pasta do seu projeto, já no segundo caso, fica a seu critério em qual pasta deve ficar.
