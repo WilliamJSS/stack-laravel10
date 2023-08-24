@@ -50,9 +50,9 @@ A partir desse ponto, a configuração do docker no seu projeto vai variar caso 
 
 Com os arquivos configurados você pode mover a pasta `docker` e o arquivo `docker-compose.yml` para a raiz do seu projeto.
 
-No `.env` do seu projeto, substitua os valores das chaves referentes ao banco de dados (**DB_CONNECTION**, **DB_HOST**, **DB_PORT**, **DB_DATABASE** e **DB_USERNAME**) pelos que estão presentes no arquivo `.env.docker` e adicione também as chaves/valores para o sgbd (**SGBD_EMAIL** e **SGBD_PASS**).
+No `.env` do seu projeto, substitua os valores das chaves referentes ao banco de dados (**DB_CONNECTION**, **DB_HOST**, **DB_PORT**, **DB_DATABASE** e **DB_USERNAME**) pelos que estão presentes no arquivo `.env.docker` e adicione também as chaves/valores para o sgbd (**SGBD_EMAIL** e **SGBD_PASS**). Feito isso, você pode apagar os arquivos restantes desse repositório.
 
-🔴 Com exceção do **DB_PASSWORD**, **SGBD_EMAIL** e **SGBD_PASS**, os valores das outras chaves você não deve alterar, pois são utilizadas em outros arquivos (`docker/pgadmin/servers.json` e `docker-compose.yml`)
+🔴 Com exceção do **DB_PASSWORD**, **SGBD_EMAIL** e **SGBD_PASS**, os valores das outras chaves você **NÃO DEVE** alterar, pois são utilizadas em outros arquivos (`docker/pgadmin/servers.json` e `docker-compose.yml`)
 
 ### 3.2 Projeto novo
 
