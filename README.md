@@ -1,33 +1,51 @@
 <p align="center"><img src="./assets/laravel_docker.jpeg" alt="Laravel Docker"></p>
 
-## Descrição
+<p align="center"><b>Stack Laravel 10 - Docker, Apache (com PHP 8.2 e Node 20.5), PostgreSQL 12 e pgAdmin4 (v7.5)</b></p>
 
-Stack Laravel 10 - Docker, Apache (PHP 8.2), PostgreSQL 12 e pgAdmin4
+## 1. Download
 
-## Instalação
+Você pode configurar essa stack em um ***projeto existente*** ou usá-la para ***criar um novo projeto***, no primeiro caso faça o clone desse repositório dentro da pasta do seu projeto, já no segundo caso, fica a seu critério em qual pasta deve ficar.
 
-**Faça o clone desse projeto:**
+**Faça o clone desse repositório (substitua `nome_da_pasta` pelo nome do seu projeto):**
 ```bash
-git clone git@github.com:WilliamJSS/stack-laravel10.git nome_do_meu_projeto
+git clone git@github.com:WilliamJSS/stack-laravel10.git nome_da_pasta
 ```
 
-**Navegue para a pasta do projeto:**
-```bash
-cd nome_do_meu_projeto
-```
+## 2. Arquivos e pastas
 
-**Crie o arquivo `.env` a partir do `.env.example` e adicione os valores das chaves `DB_PASSWORD` e `SGBD_PASS` com uma senha da sua preferência:**
-```bash
-cp .env.example .env
-```
-*Obs: substitua `project_name` pelo nome do seu projeto em todos os arquivos (Dica: no VSCode você pode fazer isso rapidamente na aba "Pesquisar")*
+Na pasta `docker` estão os arquivos de imagem (**Dockerfile**) - usados como base para criação dos containers - e os arquivos de configuração para cada serviço/container. E na raiz do repositório o arquivo que gerencia todos eles.
 
-**Reinicie o repositório git:**
-```bash
-rm -rf .git && git init
-```
+<img src="./assets/arquivos_e_pastas.png" alt="Arquivos e Pastas">
 
-## Configuração
+- `docker/apache/web.conf`: arquivo de configuração do host do apache
+- `docker/pgadmin/servers.json`: arquivo de configuração do servidor do banco de dados no pgadmin
+- `docker/postgres/backup.sql`: arquivo de backup do banco (postgres)
+- `docker-compose.yml`: arquivo de gerenciamento dos serviços/containers
+- `.env.docker`: variáveis de ambiente necessárias para o docker
+
+*Os arquivos listados são os únicos que você vai precisar.*
+
+## 3. Configuração
+
+A partir desse ponto, a configuração do docker no seu projeto vai variar caso seja um ***projeto existente*** ou um ***projeto novo***. Mas antes disso, você precisa alterar o nome do projeto nos arquivos em que ele aparece. Caso esteja usando o [Visual Studio Code](https://code.visualstudio.com), existe uma opção que você pode usar para facilitar isso:
+
+<img src="./assets/vscode_pesquisar_e_substituir.png" alt="VSCode Pesquisar e Substituir">
+
+*Substitua `project_name` pelo nome do seu projeto nos arquivos `docker-compose.yml`, `docker/apache/web.conf`, `docker/apache/Dockerfile` e `docker/pgadmin/servers.json`*.
+
+### 3.1 Projeto existente
+
+Com os arquivos configurados você pode mover a pasta `docker` e o arquivo `docker-compose.yml` para a raiz do seu projeto.
+
+No `.env` do seu projeto, substitua os valores das chaves referentes ao banco de dados (**DB_CONNECTION**, **DB_HOST**, **DB_PORT**, **DB_DATABASE** e **DB_USERNAME**) pelos que estão presentes no arquivo `.env.docker` e adicione também as chaves/valores para o sgbd (**SGBD_EMAIL** e **SGBD_PASS**).
+
+🔴 Com exceção do **DB_PASSWORD**, **SGBD_EMAIL** e **SGBD_PASS**, os valores das outras chaves você não deve alterar, pois são utilizadas em outros arquivos (`docker/pgadmin/servers.json` e `docker-compose.yml`)
+
+### 3.2 Projeto novo
+
+> Escrevendo...
+
+## 4. Execução do docker
 
 **Suba os containers:**
 ```bash
@@ -36,26 +54,38 @@ docker compose up -d
 
 **Acesse o terminal do container onde está o projeto:**
 ```bash
-docker exec -it nome_do_meu_projeto_site 
+docker exec -it project_name_site 
 ```
 
-**Execute o comando para configurar o projeto (isso irá instalar as dependências necessárias, adicionar uma chave para a aplicação e ativar o host do apache):**
+## Extra: scripts
+
+### *Configurar o projeto depois do git clone nunca foi tão fácil...*
+
+Alguns scripts que podem ser úteis no seu projeto (adicione-os na seção de ***scripts*** do arquivo `package.json`):
+```json
+"setup": "npm run update && npm run permission && npm run key",
+"key": "php artisan key:generate",
+"permission": "chmod -R 777 .",
+"update": "composer update && npm update",
+"db": "php artisan migrate:fresh && php artisan db:seed"
+```
+
+A ideia é apenas <a href="#4-execução-do-docker">subir os containers</a> e rodar um `npm run setup` no terminal, e pronto!
+
+### Criar backup do banco
+
+Dentro da pasta do projeto, fora do terminal do container, você pode rodar esse comando para gerar um backup da versão atual do seu banco (substitua `project_name` pelo nome do seu projeto):
 ```bash
-npm run setup
+docker exec -i project_name_db pg_dump -U project_name project_name > ./docker/postgres/backup.sql
 ```
 
-## Execução
-
-**Para rodar a aplicação, dentro do terminal do container execute o seguinte comando:**
-```bash
-npm run dev
-```
+*O diretório após o sinal de **>** é onde ficará salvo o backup*.
 
 ## Links
 
 Assim que estiver tudo configurado, você pode acessar o pgAdmin e o seu projeto pelo navegador por meio dos links abaixo:
 
-- [Meu Projeto Laravel](http://localhost)
+- [Projeto](http://localhost)
 - [pgAdmin4](http://localhost:5050)
 
 ## Referências
