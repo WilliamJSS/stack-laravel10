@@ -78,10 +78,10 @@ docker exec -it project_name_site
 
 Alguns scripts que podem ser úteis no seu projeto (adicione-os na seção de ***scripts*** do arquivo `package.json`):
 ```json
-"setup": "npm run update && npm run permission && npm run key",
+"setup": "npm run packages && npm run permission && npm run key",
 "key": "php artisan key:generate",
 "permission": "chmod -R 777 .",
-"update": "composer update && npm update",
+"packages": "composer install && npm install",
 "db": "php artisan migrate:fresh && php artisan db:seed"
 ```
 
