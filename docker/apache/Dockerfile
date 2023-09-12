@@ -22,9 +22,11 @@ RUN chmod -R 777 /var/www/html \
     && echo "America/Bahia" > /etc/timezone \
     && sed "s/;date.timezone =/date.timezone = America\/Bahia/g" /usr/local/etc/php/php.ini-development > /usr/local/etc/php/php.ini
 
-# install node
-RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
-    && apt-get install -y nodejs
+# install node and npm
+RUN apt-get install nodejs npm -y \
+    && npm install -g n \
+    && n lts && n latest && n prune \
+    && npm install -g npm@latest
 
 # activate webserver
 WORKDIR /etc/apache2/sites-available
